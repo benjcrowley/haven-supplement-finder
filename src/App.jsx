@@ -1,13 +1,13 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Activity, 
-  Heart, 
-  Brain, 
-  Shield, 
-  Clock, 
-  Zap, 
-  ArrowRight, 
-  Info, 
+import {
+  Activity,
+  Heart,
+  Brain,
+  Shield,
+  Clock,
+  Zap,
+  ArrowRight,
+  Info,
   CheckCircle,
   Users,
   FileText,
@@ -21,9 +21,13 @@ import {
   Square,
   CheckSquare,
   Sparkles,
-  Leaf,
-  FlaskConical
+  FlaskConical,
+  ShoppingCart,
+  ExternalLink
 } from 'lucide-react';
+
+// --- Shopify Config ---
+const SHOPIFY_DOMAIN = 'haven-wellness.co';
 
 // --- Haven Wellness Brand Constants ---
 const BRAND = {
@@ -65,7 +69,11 @@ const PRODUCTS = [
     ],
     audience: 'Athletes, injury patients, or those with musculoskeletal/gut injuries.',
     evidence: 'A 2025 review found BPC-157 significantly improved healing in muscle, tendon, ligament, and bone injury models. 7 of 12 patients with chronic knee pain had >6 months of relief.',
-    theme: 'sky'
+    theme: 'sky',
+    price: 135.00,
+    comparePrice: 180.00,
+    variantId: '44488724447279',
+    shopUrl: 'https://haven-wellness.co/products/bcp-157-body-protection-compound'
   },
   {
     id: 'epitalon',
@@ -81,7 +89,11 @@ const PRODUCTS = [
     ],
     audience: 'Adults interested in anti-aging, longevity, and better sleep.',
     evidence: 'Decades of research show impact on aging; animal studies showed ~50% lifespan extension in rats. Human trials report improved immune profiles.',
-    theme: 'earth'
+    theme: 'earth',
+    price: 135.00,
+    comparePrice: 180.00,
+    variantId: '44443701575727',
+    shopUrl: 'https://haven-wellness.co/products/epitalon'
   },
   {
     id: 'kpv',
@@ -97,7 +109,11 @@ const PRODUCTS = [
     ],
     audience: 'Individuals with chronic inflammatory conditions (IBD) or difficult wounds.',
     evidence: 'In mouse colitis models, targeted KPV markedly improved colonic healing. Dermatology research found treated wounds healed faster with better cosmetic outcomes.',
-    theme: 'sage'
+    theme: 'sage',
+    price: 135.00,
+    comparePrice: 180.00,
+    variantId: '44443751710767',
+    shopUrl: 'https://haven-wellness.co/products/kpv'
   },
   {
     id: 'mitomax',
@@ -113,7 +129,11 @@ const PRODUCTS = [
     ],
     audience: 'Those with low energy, chronic fatigue, or age-related stamina decline.',
     evidence: 'Ames "rejuvenation" study showed old rats given acetyl-L-carnitine + lipoic acid regained youthful energy and memory performance.',
-    theme: 'sand'
+    theme: 'sand',
+    price: 66.40,
+    comparePrice: 75.00,
+    variantId: '44693906554927',
+    shopUrl: 'https://haven-wellness.co/products/mitomax'
   },
   {
     id: 'opticut',
@@ -129,7 +149,11 @@ const PRODUCTS = [
     ],
     audience: 'Adults struggling with weight management, metabolic syndrome, or blood sugar.',
     evidence: 'Participants in trials saw significant improvements in body weight and appetite hormones vs placebo. Better weight loss outcomes in clinical studies.',
-    theme: 'earth'
+    theme: 'earth',
+    price: 46.90,
+    comparePrice: 80.00,
+    variantId: '44694039855151',
+    shopUrl: 'https://haven-wellness.co/products/opticut'
   },
   {
     id: 'prebio-plus',
@@ -145,7 +169,11 @@ const PRODUCTS = [
     ],
     audience: 'Individuals with digestive issues like IBS, leaky gut, SIBO, or bloating.',
     evidence: 'Oral immunoglobulin therapy led to normal stool frequency in 91% of IBS patients (vs 35% before). Spore probiotics reduced abdominal pain significantly.',
-    theme: 'sage'
+    theme: 'sage',
+    price: 64.90,
+    comparePrice: 75.00,
+    variantId: '44694125314095',
+    shopUrl: 'https://haven-wellness.co/products/prebio-plus'
   },
   {
     id: 'prospore',
@@ -161,7 +189,11 @@ const PRODUCTS = [
     ],
     audience: 'Those with constipation/irregularity or seeking weight management support.',
     evidence: '28-day RCT of gold kiwifruit fiber showed significant increase in beneficial bacteria and improved bowel habits compared to baseline.',
-    theme: 'sage'
+    theme: 'sage',
+    price: 59.90,
+    comparePrice: 75.00,
+    variantId: '44651030118447',
+    shopUrl: 'https://haven-wellness.co/products/prospore'
   },
   {
     id: 'tb4-frag',
@@ -177,7 +209,11 @@ const PRODUCTS = [
     ],
     audience: 'Athletes or patients recovering from musculoskeletal injuries/surgeries.',
     evidence: 'Fragment Ac-SDKP exhibits robust angiogenic properties in vitro and in vivo. Early case observations report quicker recovery times.',
-    theme: 'sky'
+    theme: 'sky',
+    price: 135.00,
+    comparePrice: 180.00,
+    variantId: '44436627128367',
+    shopUrl: 'https://haven-wellness.co/products/tb4-frag-muscle-joint-recovery-bioregulator'
   },
   {
     id: 'thymogen',
@@ -193,7 +229,11 @@ const PRODUCTS = [
     ],
     audience: 'Individuals with recurrent infections, aging immune systems, or chronic challenges.',
     evidence: 'Trials indicate better clinical outcomes than standard Thymosin α1. Normalized low lymphocyte counts and boosted resistance in practice.',
-    theme: 'sage'
+    theme: 'sage',
+    price: 135.00,
+    comparePrice: 180.00,
+    variantId: '44443758231599',
+    shopUrl: 'https://haven-wellness.co/products/thymogen-alpha-1'
   },
   {
     id: 'ultromega',
@@ -209,7 +249,11 @@ const PRODUCTS = [
     ],
     audience: 'Adults supporting heart/brain health or reducing chronic inflammation.',
     evidence: 'Meta-analysis found fish oil significantly lowered heart attack risk. Studies link omega-3s to enhanced gut barrier function and reduced permeability.',
-    theme: 'sky'
+    theme: 'sky',
+    price: 86.60,
+    comparePrice: 109.00,
+    variantId: '44696975704111',
+    shopUrl: 'https://haven-wellness.co/products/ultromega'
   },
   {
     id: 'methylene-blue',
@@ -500,10 +544,10 @@ const ProductCard = ({ product, isSelected, onToggleCompare, index }) => {
       </div>
 
       {/* Expand Button */}
-      <button 
+      <button
         onClick={() => setExpanded(!expanded)}
         className="w-full border-t p-4 text-[9px] font-semibold uppercase tracking-[0.2em] transition-all duration-200 flex items-center justify-center"
-        style={{ 
+        style={{
           borderColor: `${BRAND.colors.grayDark}10`,
           color: BRAND.colors.grayDark,
           backgroundColor: expanded ? BRAND.colors.grayLight : 'white'
@@ -515,6 +559,29 @@ const ProductCard = ({ product, isSelected, onToggleCompare, index }) => {
           <>Full Details & Evidence <ChevronDown className="w-3 h-3 ml-2" /></>
         )}
       </button>
+
+      {/* Shop Now Button */}
+      {product.shopUrl && (
+        <a
+          href={product.shopUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full p-4 text-[10px] font-semibold uppercase tracking-[0.2em] transition-all duration-200 flex items-center justify-center gap-3 hover:opacity-90"
+          style={{
+            backgroundColor: styles.badge.backgroundColor,
+            color: '#fff'
+          }}
+        >
+          <ShoppingCart className="w-4 h-4" />
+          Shop Now — ${product.price?.toFixed(2)}
+          {product.comparePrice && (
+            <span className="line-through opacity-60 text-[9px]">
+              ${product.comparePrice.toFixed(2)}
+            </span>
+          )}
+          <ExternalLink className="w-3 h-3 ml-1" />
+        </a>
+      )}
     </div>
   );
 };
@@ -714,6 +781,208 @@ const CompareModal = ({ isOpen, onClose, productIds }) => {
   );
 };
 
+// --- Add Bundle to Cart Component ---
+const AddBundleToCart = ({ items, buttonText = "Add Bundle to Cart", className = "" }) => {
+  const buildCartUrl = () => {
+    const itemsString = items
+      .map(item => `${item.variantId}:${item.quantity || 1}`)
+      .join(',');
+    return `https://${SHOPIFY_DOMAIN}/cart/${itemsString}`;
+  };
+
+  const handleClick = () => {
+    window.open(buildCartUrl(), '_blank');
+  };
+
+  const totalPrice = items.reduce((sum, item) => {
+    const product = PRODUCTS.find(p => p.variantId === item.variantId);
+    return sum + (product?.price || 0) * (item.quantity || 1);
+  }, 0);
+
+  const totalComparePrice = items.reduce((sum, item) => {
+    const product = PRODUCTS.find(p => p.variantId === item.variantId);
+    return sum + (product?.comparePrice || product?.price || 0) * (item.quantity || 1);
+  }, 0);
+
+  return (
+    <button
+      onClick={handleClick}
+      className={`flex items-center justify-center gap-3 px-6 py-4 text-white text-[10px] font-semibold uppercase tracking-[0.2em] transition-all duration-200 hover:shadow-lg hover:scale-[1.02] ${className}`}
+      style={{ backgroundColor: BRAND.colors.grayDark }}
+    >
+      <ShoppingCart className="w-4 h-4" />
+      {buttonText}
+      <span className="ml-2">— ${totalPrice.toFixed(2)}</span>
+      {totalComparePrice > totalPrice && (
+        <span className="line-through opacity-50 text-[9px]">
+          ${totalComparePrice.toFixed(2)}
+        </span>
+      )}
+    </button>
+  );
+};
+
+// --- Quiz Results Component ---
+const QuizResults = ({ productIds, onClose, onReset }) => {
+  const [selectedProducts, setSelectedProducts] = useState(productIds);
+  const recommendedProducts = PRODUCTS.filter(p => productIds.includes(p.id));
+
+  const toggleProduct = (id) => {
+    setSelectedProducts(prev =>
+      prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
+    );
+  };
+
+  const bundleItems = selectedProducts
+    .map(id => {
+      const product = PRODUCTS.find(p => p.id === id);
+      return product?.variantId ? { variantId: product.variantId, quantity: 1 } : null;
+    })
+    .filter(Boolean);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md bg-black/30">
+      <div className="bg-white w-full max-w-2xl overflow-hidden flex flex-col relative shadow-2xl max-h-[90vh]">
+        {/* Header */}
+        <div
+          className="p-8 text-center border-b"
+          style={{ backgroundColor: BRAND.colors.grayLight, borderColor: `${BRAND.colors.grayDark}10` }}
+        >
+          <div
+            className="w-12 h-12 mx-auto mb-4 flex items-center justify-center"
+            style={{ backgroundColor: `${BRAND.colors.sage}20` }}
+          >
+            <CheckCircle className="w-6 h-6" style={{ color: BRAND.colors.sage }} />
+          </div>
+          <h2
+            className="text-xl font-semibold tracking-[0.15em]"
+            style={{ color: BRAND.colors.grayDark }}
+          >
+            YOUR RECOMMENDED PROTOCOL
+          </h2>
+          <p
+            className="text-[10px] font-light tracking-[0.3em] uppercase mt-2"
+            style={{ color: BRAND.colors.grayDark, opacity: 0.5 }}
+          >
+            Based on your goals
+          </p>
+          <button
+            onClick={onClose}
+            className="absolute top-6 right-6 p-2 hover:bg-black/5 rounded-full transition-colors"
+          >
+            <X className="w-5 h-5" style={{ color: BRAND.colors.grayDark, opacity: 0.5 }} />
+          </button>
+        </div>
+
+        {/* Products */}
+        <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
+          <p
+            className="text-[10px] font-medium uppercase tracking-[0.2em] mb-4"
+            style={{ color: BRAND.colors.grayDark, opacity: 0.5 }}
+          >
+            Select products to add to your cart:
+          </p>
+          <div className="space-y-3">
+            {recommendedProducts.map(product => {
+              const styles = getThemeStyles(product.theme);
+              const isSelected = selectedProducts.includes(product.id);
+              return (
+                <button
+                  key={product.id}
+                  onClick={() => toggleProduct(product.id)}
+                  className={`w-full text-left p-5 border transition-all duration-200 flex items-start gap-4 ${isSelected ? 'ring-2' : ''}`}
+                  style={{
+                    borderColor: isSelected ? styles.border.borderColor : `${BRAND.colors.grayDark}15`,
+                    ringColor: isSelected ? styles.border.borderColor : 'transparent'
+                  }}
+                >
+                  <div className="flex-shrink-0 mt-1">
+                    {isSelected ? (
+                      <CheckSquare className="w-5 h-5" style={{ color: styles.border.borderColor }} />
+                    ) : (
+                      <Square className="w-5 h-5 text-gray-300" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span
+                        className="inline-block px-2 py-0.5 text-[8px] font-semibold tracking-[0.15em]"
+                        style={{ backgroundColor: styles.badge.backgroundColor, color: '#fff' }}
+                      >
+                        {product.id.toUpperCase()}
+                      </span>
+                      <span
+                        className="font-semibold text-sm tracking-[0.05em]"
+                        style={{ color: BRAND.colors.grayDark }}
+                      >
+                        {product.name}
+                      </span>
+                    </div>
+                    <p
+                      className="text-xs font-light leading-relaxed"
+                      style={{ color: BRAND.colors.grayDark, opacity: 0.7 }}
+                    >
+                      {product.coreFunction}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 text-right">
+                    {product.price && (
+                      <>
+                        <p
+                          className="text-sm font-semibold"
+                          style={{ color: BRAND.colors.grayDark }}
+                        >
+                          ${product.price.toFixed(2)}
+                        </p>
+                        {product.comparePrice && (
+                          <p
+                            className="text-[10px] line-through"
+                            style={{ color: BRAND.colors.grayDark, opacity: 0.4 }}
+                          >
+                            ${product.comparePrice.toFixed(2)}
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div
+          className="p-6 border-t space-y-4"
+          style={{ backgroundColor: BRAND.colors.grayLight, borderColor: `${BRAND.colors.grayDark}10` }}
+        >
+          {bundleItems.length > 0 ? (
+            <AddBundleToCart
+              items={bundleItems}
+              buttonText={`Add ${bundleItems.length} Product${bundleItems.length > 1 ? 's' : ''} to Cart`}
+              className="w-full"
+            />
+          ) : (
+            <p
+              className="text-center text-[10px] font-medium uppercase tracking-[0.15em] py-4"
+              style={{ color: BRAND.colors.grayDark, opacity: 0.5 }}
+            >
+              Select at least one product
+            </p>
+          )}
+          <button
+            onClick={onReset}
+            className="w-full text-center text-[10px] font-semibold uppercase tracking-[0.2em] py-3 transition-opacity hover:opacity-60"
+            style={{ color: BRAND.colors.grayDark, opacity: 0.5 }}
+          >
+            ← Start Over
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- Quiz Modal Component ---
 const QuizModal = ({ isOpen, onClose, onFinish }) => {
   const [currentStepId, setCurrentStepId] = useState('goal');
@@ -851,6 +1120,7 @@ export default function HavenSupplementFinder() {
   const [compareList, setCompareList] = useState([]);
   const [showCompare, setShowCompare] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [quizResults, setQuizResults] = useState(null);
 
   const toggleCompare = (id) => {
     setCompareList(prev => {
@@ -863,8 +1133,12 @@ export default function HavenSupplementFinder() {
   const handleQuizResult = (productIds) => {
     setSearchTerm('');
     setActiveCategory('all');
-    setCompareList(productIds);
-    setShowCompare(true);
+    setQuizResults(productIds);
+  };
+
+  const handleQuizReset = () => {
+    setQuizResults(null);
+    setShowQuiz(true);
   };
 
   const filteredProducts = useMemo(() => {
@@ -909,16 +1183,23 @@ export default function HavenSupplementFinder() {
       </style>
 
       {/* Modals */}
-      <CompareModal 
-        isOpen={showCompare} 
-        onClose={() => setShowCompare(false)} 
-        productIds={compareList} 
+      <CompareModal
+        isOpen={showCompare}
+        onClose={() => setShowCompare(false)}
+        productIds={compareList}
       />
-      <QuizModal 
-        isOpen={showQuiz} 
-        onClose={() => setShowQuiz(false)} 
-        onFinish={handleQuizResult} 
+      <QuizModal
+        isOpen={showQuiz}
+        onClose={() => setShowQuiz(false)}
+        onFinish={handleQuizResult}
       />
+      {quizResults && (
+        <QuizResults
+          productIds={quizResults}
+          onClose={() => setQuizResults(null)}
+          onReset={handleQuizReset}
+        />
+      )}
 
       {/* Header */}
       <header 
