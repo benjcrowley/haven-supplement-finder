@@ -566,20 +566,25 @@ const ProductCard = ({ product, isSelected, onToggleCompare, index }) => {
           href={product.shopUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full p-4 text-[10px] font-semibold uppercase tracking-[0.2em] transition-all duration-200 flex items-center justify-center gap-3 hover:opacity-90"
+          className="w-full p-4 text-[10px] font-semibold uppercase tracking-[0.15em] transition-all duration-200 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3 hover:opacity-90"
           style={{
             backgroundColor: styles.badge.backgroundColor,
             color: '#fff'
           }}
         >
-          <ShoppingCart className="w-4 h-4" />
-          Shop Now — ${product.price?.toFixed(2)}
-          {product.comparePrice && (
-            <span className="line-through opacity-60 text-[9px]">
-              ${product.comparePrice.toFixed(2)}
-            </span>
-          )}
-          <ExternalLink className="w-3 h-3 ml-1" />
+          <span className="flex items-center gap-2">
+            <ShoppingCart className="w-4 h-4" />
+            <span>Shop Now</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <span>${product.price?.toFixed(2)}</span>
+            {product.comparePrice && (
+              <span className="line-through opacity-60 text-[9px]">
+                ${product.comparePrice.toFixed(2)}
+              </span>
+            )}
+            <ExternalLink className="w-3 h-3 hidden sm:block" />
+          </span>
         </a>
       )}
     </div>
@@ -589,22 +594,22 @@ const ProductCard = ({ product, isSelected, onToggleCompare, index }) => {
 // --- Filter Button Component ---
 const FilterButton = ({ category, isActive, onClick }) => {
   const Icon = category.icon;
-  
+
   return (
     <button
       onClick={() => onClick(category.id)}
-      className="flex items-center px-5 py-3 text-[10px] font-semibold tracking-[0.18em] transition-all duration-300 whitespace-nowrap border"
-      style={isActive ? { 
-        backgroundColor: category.color || BRAND.colors.grayDark, 
-        color: '#fff', 
-        borderColor: category.color || BRAND.colors.grayDark 
-      } : { 
-        backgroundColor: 'white', 
-        color: BRAND.colors.grayDark, 
+      className="flex items-center px-3 sm:px-5 py-2.5 sm:py-3 text-[9px] sm:text-[10px] font-semibold tracking-[0.12em] sm:tracking-[0.18em] transition-all duration-300 whitespace-nowrap border"
+      style={isActive ? {
+        backgroundColor: category.color || BRAND.colors.grayDark,
+        color: '#fff',
+        borderColor: category.color || BRAND.colors.grayDark
+      } : {
+        backgroundColor: 'white',
+        color: BRAND.colors.grayDark,
         borderColor: `${BRAND.colors.grayDark}20`
       }}
     >
-      {Icon && <Icon className="w-3.5 h-3.5 mr-2" style={{ opacity: isActive ? 1 : 0.5 }} />}
+      {Icon && <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 sm:mr-2" style={{ opacity: isActive ? 1 : 0.5 }} />}
       {category.label}
     </button>
   );
@@ -807,17 +812,21 @@ const AddBundleToCart = ({ items, buttonText = "Add Bundle to Cart", className =
   return (
     <button
       onClick={handleClick}
-      className={`flex items-center justify-center gap-3 px-6 py-4 text-white text-[10px] font-semibold uppercase tracking-[0.2em] transition-all duration-200 hover:shadow-lg hover:scale-[1.02] ${className}`}
+      className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-white text-[10px] font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] transition-all duration-200 hover:shadow-lg active:scale-[0.98] sm:hover:scale-[1.02] ${className}`}
       style={{ backgroundColor: BRAND.colors.grayDark }}
     >
-      <ShoppingCart className="w-4 h-4" />
-      {buttonText}
-      <span className="ml-2">— ${totalPrice.toFixed(2)}</span>
-      {totalComparePrice > totalPrice && (
-        <span className="line-through opacity-50 text-[9px]">
-          ${totalComparePrice.toFixed(2)}
-        </span>
-      )}
+      <span className="flex items-center gap-2">
+        <ShoppingCart className="w-4 h-4" />
+        {buttonText}
+      </span>
+      <span className="flex items-center gap-2">
+        <span>— ${totalPrice.toFixed(2)}</span>
+        {totalComparePrice > totalPrice && (
+          <span className="line-through opacity-50 text-[9px]">
+            ${totalComparePrice.toFixed(2)}
+          </span>
+        )}
+      </span>
     </button>
   );
 };
@@ -841,48 +850,48 @@ const QuizResults = ({ productIds, onClose, onReset }) => {
     .filter(Boolean);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md bg-black/30">
-      <div className="bg-white w-full max-w-2xl overflow-hidden flex flex-col relative shadow-2xl max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 backdrop-blur-md bg-black/30">
+      <div className="bg-white w-full sm:max-w-2xl overflow-hidden flex flex-col relative shadow-2xl max-h-[95vh] sm:max-h-[90vh] rounded-t-2xl sm:rounded-none">
         {/* Header */}
         <div
-          className="p-8 text-center border-b"
+          className="p-5 sm:p-8 text-center border-b"
           style={{ backgroundColor: BRAND.colors.grayLight, borderColor: `${BRAND.colors.grayDark}10` }}
         >
           <div
-            className="w-12 h-12 mx-auto mb-4 flex items-center justify-center"
+            className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 flex items-center justify-center"
             style={{ backgroundColor: `${BRAND.colors.sage}20` }}
           >
-            <CheckCircle className="w-6 h-6" style={{ color: BRAND.colors.sage }} />
+            <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: BRAND.colors.sage }} />
           </div>
           <h2
-            className="text-xl font-semibold tracking-[0.15em]"
+            className="text-lg sm:text-xl font-semibold tracking-[0.1em] sm:tracking-[0.15em]"
             style={{ color: BRAND.colors.grayDark }}
           >
             YOUR RECOMMENDED PROTOCOL
           </h2>
           <p
-            className="text-[10px] font-light tracking-[0.3em] uppercase mt-2"
+            className="text-[9px] sm:text-[10px] font-light tracking-[0.2em] sm:tracking-[0.3em] uppercase mt-1 sm:mt-2"
             style={{ color: BRAND.colors.grayDark, opacity: 0.5 }}
           >
             Based on your goals
           </p>
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 hover:bg-black/5 rounded-full transition-colors"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 hover:bg-black/5 rounded-full transition-colors"
           >
             <X className="w-5 h-5" style={{ color: BRAND.colors.grayDark, opacity: 0.5 }} />
           </button>
         </div>
 
         {/* Products */}
-        <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1 custom-scrollbar">
           <p
-            className="text-[10px] font-medium uppercase tracking-[0.2em] mb-4"
+            className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4"
             style={{ color: BRAND.colors.grayDark, opacity: 0.5 }}
           >
             Select products to add to your cart:
           </p>
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {recommendedProducts.map(product => {
               const styles = getThemeStyles(product.theme);
               const isSelected = selectedProducts.includes(product.id);
@@ -890,13 +899,13 @@ const QuizResults = ({ productIds, onClose, onReset }) => {
                 <button
                   key={product.id}
                   onClick={() => toggleProduct(product.id)}
-                  className={`w-full text-left p-5 border transition-all duration-200 flex items-start gap-4 ${isSelected ? 'ring-2' : ''}`}
+                  className={`w-full text-left p-3 sm:p-5 border transition-all duration-200 flex items-start gap-3 sm:gap-4 ${isSelected ? 'ring-2' : ''}`}
                   style={{
                     borderColor: isSelected ? styles.border.borderColor : `${BRAND.colors.grayDark}15`,
                     ringColor: isSelected ? styles.border.borderColor : 'transparent'
                   }}
                 >
-                  <div className="flex-shrink-0 mt-1">
+                  <div className="flex-shrink-0 mt-0.5 sm:mt-1">
                     {isSelected ? (
                       <CheckSquare className="w-5 h-5" style={{ color: styles.border.borderColor }} />
                     ) : (
@@ -904,22 +913,22 @@ const QuizResults = ({ productIds, onClose, onReset }) => {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-1">
                       <span
-                        className="inline-block px-2 py-0.5 text-[8px] font-semibold tracking-[0.15em]"
+                        className="inline-block px-1.5 sm:px-2 py-0.5 text-[7px] sm:text-[8px] font-semibold tracking-[0.1em] sm:tracking-[0.15em]"
                         style={{ backgroundColor: styles.badge.backgroundColor, color: '#fff' }}
                       >
                         {product.id.toUpperCase()}
                       </span>
                       <span
-                        className="font-semibold text-sm tracking-[0.05em]"
+                        className="font-semibold text-xs sm:text-sm tracking-[0.03em] sm:tracking-[0.05em]"
                         style={{ color: BRAND.colors.grayDark }}
                       >
                         {product.name}
                       </span>
                     </div>
                     <p
-                      className="text-xs font-light leading-relaxed"
+                      className="text-[11px] sm:text-xs font-light leading-relaxed line-clamp-2"
                       style={{ color: BRAND.colors.grayDark, opacity: 0.7 }}
                     >
                       {product.coreFunction}
@@ -929,14 +938,14 @@ const QuizResults = ({ productIds, onClose, onReset }) => {
                     {product.price && (
                       <>
                         <p
-                          className="text-sm font-semibold"
+                          className="text-xs sm:text-sm font-semibold"
                           style={{ color: BRAND.colors.grayDark }}
                         >
                           ${product.price.toFixed(2)}
                         </p>
                         {product.comparePrice && (
                           <p
-                            className="text-[10px] line-through"
+                            className="text-[9px] sm:text-[10px] line-through"
                             style={{ color: BRAND.colors.grayDark, opacity: 0.4 }}
                           >
                             ${product.comparePrice.toFixed(2)}
@@ -953,7 +962,7 @@ const QuizResults = ({ productIds, onClose, onReset }) => {
 
         {/* Footer */}
         <div
-          className="p-6 border-t space-y-4"
+          className="p-4 sm:p-6 border-t space-y-3 sm:space-y-4"
           style={{ backgroundColor: BRAND.colors.grayLight, borderColor: `${BRAND.colors.grayDark}10` }}
         >
           {bundleItems.length > 0 ? (
@@ -1011,98 +1020,98 @@ const QuizModal = ({ isOpen, onClose, onFinish }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md bg-black/30">
-      <div className="bg-white w-full max-w-lg overflow-hidden flex flex-col relative shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 backdrop-blur-md bg-black/30">
+      <div className="bg-white w-full sm:max-w-lg overflow-hidden flex flex-col relative shadow-2xl max-h-[90vh] rounded-t-2xl sm:rounded-none">
         {/* Header */}
-        <div 
-          className="p-8 text-center border-b"
+        <div
+          className="p-5 sm:p-8 text-center border-b"
           style={{ backgroundColor: BRAND.colors.grayLight, borderColor: `${BRAND.colors.grayDark}10` }}
         >
-          <div 
-            className="w-12 h-12 mx-auto mb-4 flex items-center justify-center"
+          <div
+            className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 flex items-center justify-center"
             style={{ backgroundColor: `${BRAND.colors.earth}15` }}
           >
-            <FlaskConical className="w-5 h-5" style={{ color: BRAND.colors.earth }} />
+            <FlaskConical className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: BRAND.colors.earth }} />
           </div>
-          <h2 
-            className="text-xl font-semibold tracking-[0.15em]"
+          <h2
+            className="text-lg sm:text-xl font-semibold tracking-[0.1em] sm:tracking-[0.15em]"
             style={{ color: BRAND.colors.grayDark }}
           >
             PROTOCOL FINDER
           </h2>
-          <p 
-            className="text-[10px] font-light tracking-[0.3em] uppercase mt-2"
+          <p
+            className="text-[9px] sm:text-[10px] font-light tracking-[0.2em] sm:tracking-[0.3em] uppercase mt-1 sm:mt-2"
             style={{ color: BRAND.colors.grayDark, opacity: 0.5 }}
           >
             Let's find your perfect match
           </p>
-          <button 
-            onClick={onClose} 
-            className="absolute top-6 right-6 p-2 hover:bg-black/5 rounded-full transition-colors"
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 hover:bg-black/5 rounded-full transition-colors"
           >
             <X className="w-5 h-5" style={{ color: BRAND.colors.grayDark, opacity: 0.5 }} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-8">
+        <div className="p-5 sm:p-8 overflow-y-auto">
           {history.length > 0 && (
-            <button 
-              onClick={handleBack} 
-              className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-6 flex items-center transition-opacity hover:opacity-60"
+            <button
+              onClick={handleBack}
+              className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4 sm:mb-6 flex items-center transition-opacity hover:opacity-60"
               style={{ color: BRAND.colors.grayDark, opacity: 0.5 }}
             >
               ← Back
             </button>
           )}
-          
-          <h3 
-            className="text-base font-semibold text-center mb-8 leading-relaxed tracking-[0.1em]"
+
+          <h3
+            className="text-sm sm:text-base font-semibold text-center mb-5 sm:mb-8 leading-relaxed tracking-[0.08em] sm:tracking-[0.1em]"
             style={{ color: BRAND.colors.grayDark }}
           >
             {currentStep.question}
           </h3>
 
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {currentStep.options.map((option, idx) => (
               <button
                 key={idx}
                 onClick={() => handleOptionClick(option)}
-                className="w-full text-left p-5 border transition-all duration-200 group flex items-center justify-between hover:shadow-md"
+                className="w-full text-left p-3 sm:p-5 border transition-all duration-200 group flex items-center justify-between hover:shadow-md active:bg-gray-50"
                 style={{ borderColor: `${BRAND.colors.grayDark}15` }}
               >
                 <div className="flex items-center">
                   {option.icon && (
-                    <div 
-                      className="w-10 h-10 flex items-center justify-center mr-4 transition-colors"
+                    <div
+                      className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center mr-3 sm:mr-4 transition-colors"
                       style={{ backgroundColor: BRAND.colors.grayLight }}
                     >
-                      <option.icon className="w-4 h-4" style={{ color: BRAND.colors.grayDark, opacity: 0.6 }} />
+                      <option.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: BRAND.colors.grayDark, opacity: 0.6 }} />
                     </div>
                   )}
-                  <span 
-                    className="font-semibold text-[11px] tracking-[0.15em] uppercase"
+                  <span
+                    className="font-semibold text-[10px] sm:text-[11px] tracking-[0.1em] sm:tracking-[0.15em] uppercase"
                     style={{ color: BRAND.colors.grayDark }}
                   >
                     {option.label}
                   </span>
                 </div>
-                <ArrowRight 
-                  className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+                <ArrowRight
+                  className="w-4 h-4 flex-shrink-0 transform group-hover:translate-x-1 transition-transform"
                   style={{ color: BRAND.colors.grayDark, opacity: 0.3 }}
                 />
               </button>
             ))}
           </div>
         </div>
-        
+
         {/* Footer */}
-        <div 
-          className="p-4 text-center border-t"
+        <div
+          className="p-3 sm:p-4 text-center border-t"
           style={{ backgroundColor: BRAND.colors.grayLight, borderColor: `${BRAND.colors.grayDark}10` }}
         >
-          <p 
-            className="text-[9px] font-semibold uppercase tracking-[0.25em]"
+          <p
+            className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em]"
             style={{ color: BRAND.colors.grayDark, opacity: 0.3 }}
           >
             Step {history.length + 1} of 2
@@ -1179,6 +1188,9 @@ export default function HavenSupplementFinder() {
           .custom-scrollbar::-webkit-scrollbar { width: 4px; }
           .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
           .custom-scrollbar::-webkit-scrollbar-thumb { background: ${BRAND.colors.sand}; border-radius: 4px; }
+
+          .scrollbar-hide::-webkit-scrollbar { display: none; }
+          .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         `}
       </style>
 
@@ -1270,20 +1282,22 @@ export default function HavenSupplementFinder() {
             style={{ backgroundColor: BRAND.colors.grayDark }}
           >
             <Sparkles className="w-3 h-3 mr-2" style={{ color: BRAND.colors.sand }} />
-            Launch Protocol Wizard
+            Help Me Choose
           </button>
         </div>
 
         {/* Filter Navigation */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16">
-          {CATEGORIES.map(cat => (
-            <FilterButton 
-              key={cat.id} 
-              category={cat} 
-              isActive={activeCategory === cat.id}
-              onClick={setActiveCategory}
-            />
-          ))}
+        <div className="overflow-x-auto -mx-6 px-6 mb-16 scrollbar-hide">
+          <div className="flex md:flex-wrap md:justify-center gap-2 md:gap-3 min-w-max md:min-w-0">
+            {CATEGORIES.map(cat => (
+              <FilterButton
+                key={cat.id}
+                category={cat}
+                isActive={activeCategory === cat.id}
+                onClick={setActiveCategory}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Results Header */}
